@@ -1,0 +1,139 @@
+{
+  "profile": {
+    "name": "Azaruddin A M",
+    "title": "Full Stack Developer",
+    "headline": "Angular · .NET · Node.js · AI integration · Open-source author",
+    "summary": "Full-stack developer with 6+ years of experience building Angular front ends on .NET and Node.js back ends. I ship secure fintech platforms by day and my own AI-integrated products and Angular libraries the rest of the time.",
+    "location": "Kasaragod, Kerala, India",
+    "email": "azaruddinam250@gmail.com",
+    "phone": "+91 73560 35113",
+    "github": "https://github.com/AzaruddinAM",
+    "yearsOfExperience": 6
+  },
+  "stats": [
+    { "value": "6+", "label": "Years building for the web" },
+    { "value": "20+", "label": "Production applications" },
+    { "value": "2", "label": "Open-source npm libraries" },
+    { "value": "2", "label": "Live AI products" }
+  ],
+  "skills": [
+    { "area": "Front end", "items": ["Angular 2–18", "TypeScript", "JavaScript", "HTML5", "CSS3 / SCSS", "Bootstrap 5", "Angular Material", "PrimeNG", "NG-Zorro", "React", "Flutter"] },
+    { "area": "Back end", "items": [".NET 8 / C#", "ASP.NET Core Web API", "Node.js", "Express", "Node-RED"] },
+    { "area": "Databases", "items": ["SQL Server", "PostgreSQL", "MySQL", "MongoDB", "Elasticsearch", "PL/SQL"] },
+    { "area": "Security & auth", "items": ["MFA", "SSO", "Azure AD", "VAPT remediation"] },
+    { "area": "AI", "items": ["AI chatbot integration", "AI-assisted commerce"] },
+    { "area": "DevOps & tools", "items": ["Azure DevOps", "GitHub Actions", "GitLab", "Firebase", "npm publishing", "Agile"] }
+  ],
+  "openSource": [
+    {
+      "name": "ngx-upgrade-doctor",
+      "tagline": "Know what will break before you run ng update.",
+      "description": "CLI that scans an Angular workspace for every major upgrade from v6 to v22, auto-fixes what it safely can, advises compatible library versions and adds explicit types for v22+. Built while migrating a production loan-origination app from Angular 6 to 22.",
+      "highlights": ["41 rules across every hop", "Safe auto-fixes with --dry-run", "Peer-dependency advice", "CI-friendly exit codes and JSON output"],
+      "install": "npm i -g ngx-upgrade-doctor",
+      "links": [
+        { "label": "npm", "url": "https://www.npmjs.com/package/ngx-upgrade-doctor" }
+      ]
+    },
+    {
+      "name": "draftkeeper",
+      "tagline": "Never lose what a user typed into an Angular Signal Form.",
+      "description": "One line next to your form() saves input as the user types and restores it after a closed tab, a reload, a crash or a dropped network connection.",
+      "highlights": ["localStorage, sessionStorage or IndexedDB", "Automatic or user-confirmed restore", "Network-aware submit retry", "SSR-safe, zero dependencies"],
+      "install": "npm i draftkeeper",
+      "links": [
+        { "label": "npm", "url": "https://www.npmjs.com/package/draftkeeper" },
+        { "label": "GitHub", "url": "https://github.com/AzaruddinAM/draftkeeper" }
+      ]
+    }
+  ],
+  "products": [
+    {
+      "name": "v-one",
+      "kind": "AI-integrated billing & accounting SaaS",
+      "description": "Cloud billing and accounting for small businesses with a built-in AI chatbot assistant. Free sign-up with mobile number.",
+      "features": ["GST-ready invoices and estimates", "Real-time stock tracking", "Receivables, payables and expenses", "P&L, Balance Sheet and tax reports", "AI chatbot assistant"],
+      "url": "https://www.velouraone.in/chatboat",
+      "urlLabel": "velouraone.in"
+    },
+    {
+      "name": "Veloura Jewels",
+      "kind": "AI-powered online jewellery store",
+      "description": "D2C storefront for stainless-steel AD jewellery: 40 pieces across five categories, AI-assisted shopping and WhatsApp ordering.",
+      "features": ["Category filters and paginated catalogue", "Wishlist, bag and sold-out states", "Order on call or WhatsApp", "Gift-packing flow", "AI-assisted shopping"],
+      "url": "https://www.velourajewels.online",
+      "urlLabel": "velourajewels.online"
+    }
+  ],
+  "experience": [
+    {
+      "role": "Angular Developer",
+      "company": "Nityo Infotech",
+      "location": "Bangalore",
+      "period": "Nov 2024 – Present",
+      "summary": "Loan, audit and EMI platforms for a lending client — MFA throughout and VAPT-hardened releases.",
+      "projects": [
+        { "name": "CV", "description": "Commercial vehicle loan management", "stack": "Angular 13, .NET 8, MFA, drill-down reports" },
+        { "name": "CV Oversite", "description": "Commercial vehicle audit", "stack": "Angular 13, MFA, exit block" },
+        { "name": "Two-Wheeler", "description": "Two-wheeler loan management", "stack": "Angular 6, .NET, MFA, VAPT, dealer visit, agreements" },
+        { "name": "Two-Wheeler Oversite", "description": "Two-wheeler loan audit", "stack": "Angular 6, MFA, VAPT" },
+        { "name": "Autoloan", "description": "Auto loan management", "stack": "Angular 13, .NET, MFA, VAPT, drill-down reports" },
+        { "name": "NACH", "description": "EMI mandate management", "stack": "Angular 17, MFA, VAPT" },
+        { "name": "Credit Monitoring", "description": "Credit score management", "stack": "Angular 18, MFA" },
+        { "name": "Gold Loan suite", "description": "Gold loan, HyperVerge and Jukshi customer apps", "stack": "Migrated Angular 6 → 18" }
+      ]
+    },
+    {
+      "role": "Freelance Developer",
+      "company": "Self-employed",
+      "location": "Remote",
+      "period": "Jun 2024 – Nov 2024",
+      "summary": "Delivery-domain product work.",
+      "projects": [
+        { "name": "Fepper", "description": "Food delivery management", "stack": "Angular 18" }
+      ]
+    },
+    {
+      "role": "Software Engineer",
+      "company": "Geojit Technologies",
+      "location": "Kochi",
+      "period": "Jul 2022 – Jun 2024",
+      "summary": "Client, branch and partner platforms for a stock-broking firm.",
+      "projects": [
+        { "name": "MyGeojit", "description": "Client account management", "stack": "Angular, SSO" },
+        { "name": "SPICE", "description": "Branch customer accounts", "stack": "Angular" },
+        { "name": "CARE", "description": "Customer-care call management", "stack": "Angular" },
+        { "name": "Account Aggregator", "description": "Bank details and statements", "stack": "Angular, Azure AD" },
+        { "name": "Partner", "description": "Partner registration", "stack": "Angular, SSO" },
+        { "name": "Incentive", "description": "Employee incentives", "stack": "Angular, Node-RED, MSSQL" }
+      ]
+    },
+    {
+      "role": "MEAN Stack Developer",
+      "company": "ISFRC",
+      "location": "Kochi",
+      "period": "Nov 2019 – Jun 2022",
+      "summary": "Call-centre and field apps.",
+      "projects": [
+        { "name": "EdgeTalk", "description": "Call-centre app with chat on Asterisk", "stack": "Angular, Node.js, Elasticsearch, PostgreSQL" },
+        { "name": "Commodity Scanner", "description": "QR scanning for materials", "stack": "Flutter, PostgreSQL" }
+      ]
+    },
+    {
+      "role": "MEAN Stack Trainee & Freelancer",
+      "company": "ICT Academy / Freelance",
+      "location": "Calicut",
+      "period": "Jun 2019 – Oct 2019",
+      "summary": "First production projects.",
+      "projects": [
+        { "name": "E-Voting", "description": "Online voting", "stack": "Angular, Node.js, Express, MongoDB" },
+        { "name": "Dalelna", "description": "Find nearby accessories shops in Qatar", "stack": "Angular, Node.js, PostgreSQL" }
+      ]
+    }
+  ],
+  "education": [
+    { "title": "B.Tech", "place": "LBS College of Engineering, Kasaragod" },
+    { "title": "MEAN Stack course", "place": "ICT Academy, Calicut (2019)" }
+  ]
+}
+

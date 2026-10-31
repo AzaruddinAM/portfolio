@@ -1,0 +1,186 @@
+@switch (state().kind) {
+  @case ('loading') {
+    <div class="page-status" role="status">Loading…</div>
+  }
+  @case ('error') {
+    <div class="page-status" role="alert">
+      Sorry, the portfolio couldn't load. Please refresh the page.
+    </div>
+  }
+}
+
+@if (state(); as s) {
+  @if (s.kind === 'ready') {
+    @let p = s.data.profile;
+
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="brand" href="#top" aria-label="Back to top">
+          <span class="brand-mark">AZ</span>
+          <span class="brand-name">{{ p.name }}</span>
+        </a>
+        <button
+          class="menu-toggle"
+          type="button"
+          [attr.aria-expanded]="menuOpen()"
+          aria-controls="site-nav"
+          (click)="menuOpen.set(!menuOpen())"
+        >
+          <span class="sr-only">Menu</span>
+          <span class="menu-bar"></span>
+        </button>
+        <nav id="site-nav" class="site-nav" [class.open]="menuOpen()" aria-label="Sections">
+          @for (item of nav; track item.id) {
+            <a [href]="'#' + item.id" (click)="menuOpen.set(false)">{{ item.label }}</a>
+          }
+        </nav>
+      </div>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div class="container hero-inner">
+          <p class="eyebrow">{{ p.title }} · {{ p.location }}</p>
+          <h1>
+            Hi, I'm {{ p.name }}.<br />
+            <span class="accent">I build Angular & .NET apps that ship.</span>
+          </h1>
+          <p class="lead">{{ p.summary }}</p>
+          <p class="headline">{{ p.headline }}</p>
+          <div class="cta-row">
+            <a class="btn btn-primary" href="#contact">Hire me</a>
+            <a class="btn btn-ghost" href="#open-source">See my work</a>
+          </div>
+          <ul class="stats">
+            @for (stat of s.data.stats; track stat.label) {
+              <li>
+                <strong>{{ stat.value }}</strong>
+                <span>{{ stat.label }}</span>
+              </li>
+            }
+          </ul>
+        </div>
+      </section>
+
+      <section id="about" class="section">
+        <div class="container">
+          <h2 class="section-title"><span>01</span> Skills</h2>
+          <div class="skill-grid">
+            @for (group of s.data.skills; track group.area) {
+              <article class="card">
+                <h3>{{ group.area }}</h3>
+                <ul class="chips">
+                  @for (item of group.items; track item) {
+                    <li>{{ item }}</li>
+                  }
+                </ul>
+              </article>
+            }
+          </div>
+        </div>
+      </section>
+
+      <section id="open-source" class="section alt">
+        <div class="container">
+          <h2 class="section-title"><span>02</span> Open-source libraries</h2>
+          <div class="two-col">
+            @for (lib of s.data.openSource; track lib.name) {
+              <article class="card project-card">
+                <h3>{{ lib.name }}</h3>
+                <p class="tagline">{{ lib.tagline }}</p>
+                <p>{{ lib.description }}</p>
+                <ul class="ticks">
+                  @for (h of lib.highlights; track h) {
+                    <li>{{ h }}</li>
+                  }
+                </ul>
+                <code class="install">{{ lib.install }}</code>
+                <div class="link-row">
+                  @for (link of lib.links; track link.url) {
+                    <a [href]="link.url" target="_blank" rel="noopener">{{ link.label }} ↗</a>
+                  }
+                </div>
+              </article>
+            }
+          </div>
+        </div>
+      </section>
+
+      <section id="products" class="section">
+        <div class="container">
+          <h2 class="section-title"><span>03</span> AI products I built</h2>
+          <div class="two-col">
+            @for (product of s.data.products; track product.name) {
+              <article class="card project-card">
+                <p class="kind">{{ product.kind }}</p>
+                <h3>{{ product.name }}</h3>
+                <p>{{ product.description }}</p>
+                <ul class="ticks">
+                  @for (f of product.features; track f) {
+                    <li>{{ f }}</li>
+                  }
+                </ul>
+                <a class="btn btn-ghost" [href]="product.url" target="_blank" rel="noopener">
+                  Visit {{ product.urlLabel }} ↗
+                </a>
+              </article>
+            }
+          </div>
+        </div>
+      </section>
+
+      <section id="experience" class="section alt">
+        <div class="container">
+          <h2 class="section-title"><span>04</span> Experience</h2>
+          <ol class="timeline">
+            @for (job of s.data.experience; track job.period) {
+              <li class="timeline-item">
+                <div class="timeline-head">
+                  <h3>{{ job.role }} <span class="at">&#64; {{ job.company }}</span></h3>
+                  <p class="period">{{ job.period }} · {{ job.location }}</p>
+                </div>
+                <p>{{ job.summary }}</p>
+                <ul class="mini-projects">
+                  @for (proj of job.projects; track proj.name) {
+                    <li>
+                      <strong>{{ proj.name }}</strong>
+                      <span>{{ proj.description }}</span>
+                      <small>{{ proj.stack }}</small>
+                    </li>
+                  }
+                </ul>
+              </li>
+            }
+          </ol>
+          <h3 class="sub-title">Education</h3>
+          <ul class="education">
+            @for (ed of s.data.education; track ed.title) {
+              <li><strong>{{ ed.title }}</strong> — {{ ed.place }}</li>
+            }
+          </ul>
+        </div>
+      </section>
+
+      <section id="contact" class="section">
+        <div class="container contact-grid">
+          <div>
+            <h2 class="section-title"><span>05</span> Let's work together</h2>
+            <p class="lead">
+              Open to senior Angular / full-stack .NET roles and freelance projects.
+            </p>
+            <ul class="contact-list">
+              <li><a [href]="'mailto:' + p.email">{{ p.email }}</a></li>
+              <li><a [href]="telHref(p.phone)">{{ p.phone }}</a></li>
+              <li><a [href]="p.github" target="_blank" rel="noopener">GitHub ↗</a></li>
+            </ul>
+          </div>
+          <app-contact-form [email]="p.email" />
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">© {{ year }} {{ p.name }} · Built with Angular & .NET</div>
+    </footer>
+  }
+}

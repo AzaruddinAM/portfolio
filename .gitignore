@@ -1,0 +1,15 @@
+# Local tooling
+.claude/
+.vs/
+*.user
+
+# .NET
+bin/
+obj/
+App_Data/
+api-publish/
+TestResults/
+
+# OS
+.DS_Store
+Thumbs.db

@@ -1,0 +1,99 @@
+name: Build, test & deploy
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  client:
+    name: Angular site
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: client
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: client/package-lock.json
+      - run: npm ci
+      - run: npx ng test --watch=false
+      - run: npx ng build --configuration production
+      - uses: actions/upload-artifact@v4
+        with:
+          name: site
+          path: client/dist/portfolio/browser
+          include-hidden-files: true # keeps .htaccess
+          if-no-files-found: error
+
+  api:
+    name: .NET API
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+      - run: dotnet test api/Portfolio.sln --configuration Release
+      - run: dotnet publish api/src/Portfolio.Api --configuration Release --output api-publish
+      - uses: actions/upload-artifact@v4
+        with:
+          name: api
+          path: api-publish
+          if-no-files-found: error
+
+  deploy:
+    name: Deploy to Hostinger
+    needs: [client, api]
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: https://azaruddin.velouraone.in
+    steps:
+      - name: Check FTP secrets
+        id: check
+        env:
+          FTP_SERVER: ${{ secrets.FTP_SERVER }}
+          FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
+          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+        run: |
+          if [ -n "$FTP_SERVER" ] && [ -n "$FTP_USERNAME" ] && [ -n "$FTP_PASSWORD" ]; then
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "::warning::FTP_SERVER, FTP_USERNAME and FTP_PASSWORD secrets are not set; skipping deploy. See README."
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+          fi
+      - uses: actions/download-artifact@v4
+        if: steps.check.outputs.ready == 'true'
+        with:
+          name: site
+          path: site
+      - name: Upload over FTPS
+        if: steps.check.outputs.ready == 'true'
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps
+          local-dir: ./site/
+          server-dir: ${{ vars.FTP_SERVER_DIR || './' }}
+      - name: Smoke test
+        if: steps.check.outputs.ready == 'true'
+        run: |
+          sleep 10
+          curl --fail --silent --show-error --retry 5 --retry-delay 10 https://azaruddin.velouraone.in/ | grep -q "<app-root>"
+          curl --fail --silent --show-error https://azaruddin.velouraone.in/data/portfolio.json | grep -q "Azaruddin"
+          echo "Site is live."
