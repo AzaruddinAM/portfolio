@@ -69,11 +69,19 @@ jobs:
           FTP_SERVER: ${{ vars.FTP_SERVER || 'ftp.velouraone.in' }}
           FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
           FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+          FTP_SERVER_DIR: ${{ vars.FTP_SERVER_DIR }}
         run: |
           missing=""
           for name in FTP_USERNAME FTP_PASSWORD; do
             [ -n "${!name}" ] || missing="$missing $name"
           done
+          # Never default to the FTP root: on a shared account that is the main website
+          case "$FTP_SERVER_DIR" in
+            ""|"."|"./"|"/"|"public_html"|"public_html/"|"./public_html/"|"/public_html/")
+              echo "::warning::Repository variable FTP_SERVER_DIR must name the subdomain's own folder (e.g. ./azaruddin/). Skipping deploy so the main website is not overwritten."
+              echo "ready=false" >> "$GITHUB_OUTPUT"
+              exit 0 ;;
+          esac
           if [ -z "$missing" ]; then
             # Accept "ftp://host:21/" style values copied from hPanel: keep only the host name
             host=$(printf '%s' "$FTP_SERVER" | tr -d '[:space:]' | sed -E 's#^[a-zA-Z]+://##; s#[/:].*$##')
@@ -102,7 +110,7 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftps
           local-dir: ./site/
-          server-dir: ${{ vars.FTP_SERVER_DIR || './' }}
+          server-dir: ${{ vars.FTP_SERVER_DIR }}
       - name: Smoke test
         if: steps.check.outputs.ready == 'true'
         run: |

@@ -1,6 +1,6 @@
-# Azaruddin A M â€” Portfolio
+# Azaruddin A M — Portfolio
 
-Personal portfolio of **Azaruddin A M**, full-stack developer (Angular Â· .NET Â· Node.js).
+Personal portfolio of **Azaruddin A M**, full-stack developer (Angular · .NET · Node.js).
 Live at **https://azaruddin.velouraone.in**.
 
 | Folder | What it is |
@@ -39,20 +39,20 @@ cd client && npx ng test --watch=false
 dotnet test api/Portfolio.sln
 ```
 
-## Deployment (GitHub Actions â†’ Hostinger)
+## Deployment (GitHub Actions → Hostinger)
 
 Every push to `main` runs the Angular and .NET tests, builds both, and uploads the site to Hostinger over FTPS.
 
 One-time setup:
 
-1. **hPanel â†’ Domains â†’ Subdomains**: create `azaruddin.velouraone.in`. Note its folder (e.g. `public_html/azaruddin`).
-2. **hPanel â†’ Files â†’ FTP Accounts**: create an FTP account whose directory is that subdomain folder.
-3. **GitHub repo â†’ Settings â†’ Secrets and variables â†’ Actions**, add secrets:
+1. **hPanel → Domains → Subdomains**: create `azaruddin.velouraone.in`. Note its folder (e.g. `public_html/azaruddin`).
+2. **hPanel → Files → FTP Accounts**: create an FTP account whose directory is that subdomain folder.
+3. **GitHub repo → Settings → Secrets and variables → Actions**, add secrets:
    - `FTP_USERNAME`: the FTP account user
    - `FTP_PASSWORD`: its password
-4. Optional variables: `FTP_SERVER` (default `ftp.velouraone.in`) and `FTP_SERVER_DIR` if the FTP account opens above the subdomain folder (e.g. `public_html/azaruddin/`). Default: `./`
-5. **hPanel â†’ Security â†’ SSL**: install SSL for the subdomain and turn on Force HTTPS.
-6. Re-run the workflow (Actions â†’ Build, test & deploy â†’ Run workflow).
+4. Add the **variable** `FTP_SERVER_DIR` (required): the subdomain's folder as seen from the FTP account, ending in `/` (e.g. `./azaruddin/`). Deploy is skipped while it is empty or points at the FTP root, so the main velouraone.in site is never overwritten. Optional variable `FTP_SERVER` overrides the default host `ftp.velouraone.in`.
+5. **hPanel → Security → SSL**: install SSL for the subdomain and turn on Force HTTPS.
+6. Re-run the workflow (Actions → Build, test & deploy → Run workflow).
 
 Without the secrets the deploy job is skipped with a warning, and the build still runs.
 
