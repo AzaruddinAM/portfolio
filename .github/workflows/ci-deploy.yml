@@ -69,10 +69,14 @@ jobs:
           FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
           FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
         run: |
-          if [ -n "$FTP_SERVER" ] && [ -n "$FTP_USERNAME" ] && [ -n "$FTP_PASSWORD" ]; then
+          missing=""
+          for name in FTP_SERVER FTP_USERNAME FTP_PASSWORD; do
+            [ -n "${!name}" ] || missing="$missing $name"
+          done
+          if [ -z "$missing" ]; then
             echo "ready=true" >> "$GITHUB_OUTPUT"
           else
-            echo "::warning::FTP_SERVER, FTP_USERNAME and FTP_PASSWORD secrets are not set; skipping deploy. See README."
+            echo "::warning::Missing repository secrets:$missing. Add them under Settings > Secrets and variables > Actions > Repository secrets. Skipping deploy."
             echo "ready=false" >> "$GITHUB_OUTPUT"
           fi
       - uses: actions/download-artifact@v4
