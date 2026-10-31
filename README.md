@@ -50,7 +50,7 @@ One-time setup:
 3. **GitHub repo → Settings → Secrets and variables → Actions**, add secrets:
    - `FTP_USERNAME`: the FTP account user
    - `FTP_PASSWORD`: its password
-4. Add the **variable** `FTP_SERVER_DIR` (required): the subdomain's folder as seen from the FTP account, ending in `/` (e.g. `./azaruddin/`). Deploy is skipped while it is empty or points at the FTP root, so the main velouraone.in site is never overwritten. Optional variable `FTP_SERVER` overrides the default host `ftp.velouraone.in`.
+4. The site uploads to `./azaruddin/` (the subdomain's folder, as seen from an FTP account that opens at velouraone.in's web root). Override with the **variable** `FTP_SERVER_DIR` if your FTP account opens elsewhere. Deploy refuses to upload to the FTP root, so the main velouraone.in site is never overwritten. Optional variable `FTP_SERVER` overrides the default host `ftp.velouraone.in`.
 5. **hPanel → Security → SSL**: install SSL for the subdomain and turn on Force HTTPS.
 6. Re-run the workflow (Actions → Build, test & deploy → Run workflow).
 

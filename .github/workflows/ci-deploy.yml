@@ -69,7 +69,8 @@ jobs:
           FTP_SERVER: ${{ vars.FTP_SERVER || 'ftp.velouraone.in' }}
           FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
           FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
-          FTP_SERVER_DIR: ${{ vars.FTP_SERVER_DIR }}
+          # The FTP account opens at velouraone.in's web root; the subdomain lives in ./azaruddin/
+          FTP_SERVER_DIR: ${{ vars.FTP_SERVER_DIR || './azaruddin/' }}
         run: |
           missing=""
           for name in FTP_USERNAME FTP_PASSWORD; do
@@ -110,7 +111,7 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftps
           local-dir: ./site/
-          server-dir: ${{ vars.FTP_SERVER_DIR }}
+          server-dir: ${{ vars.FTP_SERVER_DIR || './azaruddin/' }}
       - name: Smoke test
         if: steps.check.outputs.ready == 'true'
         run: |
