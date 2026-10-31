@@ -1,0 +1,49 @@
+name: One-time restore of v-one home page
+
+# Puts back v-one's original index.html, .htaccess and favicon.svg in the
+# velouraone.in web root, and removes the portfolio files a misdirected deploy left there.
+on:
+  push:
+    branches: [main]
+    paths: [.github/restore-v-one/**, .github/workflows/restore-v-one.yml]
+
+permissions:
+  contents: read
+
+jobs:
+  restore:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get update -qq && sudo apt-get install -y -qq lftp
+      - name: Restore files over FTPS
+        env:
+          FTP_HOST: ${{ vars.FTP_SERVER || 'ftp.velouraone.in' }}
+          FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
+          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+        working-directory: .github/restore-v-one
+        run: |
+          lftp -u "$FTP_USERNAME,$FTP_PASSWORD" "$FTP_HOST" <<'EOF'
+          set ftp:ssl-force true
+          set ftp:ssl-protect-data true
+          set net:max-retries 2
+          echo "== root before"
+          cls -a
+          put -O . index.html
+          put -O . .htaccess
+          put -O . favicon.svg
+          set cmd:fail-exit no
+          rm -f main-SLLMJZX6.js
+          rm -f styles-EA5PBLIE.css
+          rm -f .ftp-deploy-sync-state.json
+          rm -f data/portfolio.json
+          rmdir data
+          echo "== root after"
+          cls -a
+          EOF
+      - name: Verify v-one is back
+        run: |
+          sleep 10
+          curl -fsS -H 'Cache-Control: no-cache' "https://www.velouraone.in/?r=$GITHUB_RUN_ID" | tee home.html | grep -q "v-one"
+          curl -fsS -o /dev/null -w "main bundle: %{http_code} %{content_type}\n" https://www.velouraone.in/main-SAZDNSSO.js
+          curl -fsS https://azaruddin.velouraone.in/ | grep -q "<app-root>" && echo "Portfolio still live."
